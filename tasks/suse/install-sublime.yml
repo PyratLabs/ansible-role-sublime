@@ -1,0 +1,19 @@
+---
+
+- name: Ensure RPM GPG key is present
+  rpm_key:
+    key: https://download.sublimetext.com/sublimehq-rpm-pub.gpg
+    state: present
+
+- name: Ensure Zypper repository file exists
+  zypper_repository:
+    name: sublime
+    description: sublime Repository
+    repo: https://download.sublimetext.com/rpm/stable/x86_64
+    state: present
+
+- name: Ensure Sublime is installed
+  zypper:
+    name: sublime-text
+    state: present
+    update_cache: true

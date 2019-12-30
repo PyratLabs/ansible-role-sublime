@@ -1,0 +1,31 @@
+---
+
+- name: Ensure RPM GPG key is present
+  rpm_key:
+    key: https://download.sublimetext.com/sublimehq-rpm-pub.gpg
+    state: present
+
+- name: Ensure YUM repository file exists
+  yum_repository:
+    name: sublime
+    description: Sublime Text Editor Repository
+    file: sublime
+    baseurl: https://download.sublimetext.com/rpm/stable/x86_64
+    state: present
+    enabled: true
+    gpgcheck: true
+    gpgkey: https://download.sublimetext.com/sublimehq-rpm-pub.gpg
+
+- name: Ensure Sublime is installed (YUM)
+  yum:
+    name: sublime-text
+    state: present
+    update_cache: true
+  when: ansible_pkg_mgr == "yum"
+
+- name: Ensure Sublime is installed (DNF)
+  yum:
+    name: sublime-text
+    state: present
+    update_cache: true
+  when: ansible_pkg_mgr == "dnf"
